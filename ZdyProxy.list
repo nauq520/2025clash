@@ -1,0 +1,16 @@
+# Talkatone
+DOMAIN-SUFFIX,tktn.be
+
+# 检测IP的
+DOMAIN-SUFFIX,ping0.cc
+DOMAIN-SUFFIX,ip.sb
+DOMAIN-SUFFIX,ipleak.net
+DOMAIN-SUFFIX,browserleaks.com
+
+# 其他
+DOMAIN-SUFFIX,glados.network
+
+# 域名关键字匹配
+DOMAIN-KEYWORD,ping0
+DOMAIN-KEYWORD,ipleak
+DOMAIN-KEYWORD,browserleaks

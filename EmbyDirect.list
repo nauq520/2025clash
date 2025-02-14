@@ -1,0 +1,90 @@
+# Emby直连
+# 域名后缀匹配DOMAIN-SUFFIX
+
+# 月饼
+DOMAIN-SUFFIX,emby.my
+
+# 探花TV
+DOMAIN-SUFFIX,tanhuatv.site
+
+# 终点站
+DOMAIN-SUFFIX,pub1.emby.wtf
+DOMAIN-SUFFIX,pub2.emby.wtf
+DOMAIN-SUFFIX,pub3.emby.wtf
+DOMAIN-SUFFIX,pub1.term.wtf
+DOMAIN-SUFFIX,pub2.term.wtf
+DOMAIN-SUFFIX,pub3.term.wtf
+
+# 飞跃银河
+DOMAIN-SUFFIX,yhemby.top
+
+# 飞越彩虹
+DOMAIN-SUFFIX,581658.best
+DOMAIN-SUFFIX,7777777.buzz
+
+# 非越媒体库
+DOMAIN-SUFFIX,sfcj.org
+
+# 见手青
+DOMAIN-SUFFIX,jsq.mooguu.xyz
+
+# 极光
+DOMAIN-SUFFIX,ad.auroramedia.vip
+
+# YOMO
+DOMAIN-SUFFIX,emby.yomo.lol
+
+# NanflixUSA
+DOMAIN-SUFFIX,us.nanflix.net
+
+# saturday.lite
+DOMAIN-KEYWORD,saturday
+
+# 起点站公费服
+DOMAIN-SUFFIX,qdz-hk-0.vfing.de
+DOMAIN-SUFFIX,qdz-hk-1.vfing.de
+DOMAIN-SUFFIX,qdz-sg.vfing.de
+DOMAIN-SUFFIX,qdzcdn.vfing.de
+
+# 起点站公益服
+DOMAIN-SUFFIX,free.28.al
+
+# 西瓜
+DOMAIN-SUFFIX,1024.name
+DOMAIN-SUFFIX,seoul.1024.name
+DOMAIN-SUFFIX,sjc.1024.name
+
+# July
+DOMAIN-SUFFIX,sxiaolong-my.sharepoint.com
+
+# Nya
+DOMAIN-SUFFIX,emby.bangumi.ca
+
+# 比比
+DOMAIN-SUFFIX,beebi.org
+
+# 叔服
+DOMAIN-SUFFIX,mcjoker.xyz
+
+
+# Emby ip
+IP-CIDR,107.181.238.0/24,no-resolve
+IP-CIDR,31.25.88.0/24,no-resolve
+IP-CIDR,104.161.22.0/24,no-resolve
+IP-CIDR,193.122.114.0/24,no-resolve
+
+
+
+# 域名关键字匹配DOMAIN-KEYWORD
+DOMAIN-KEYWORD,tanhuatv
+DOMAIN-KEYWORD,term
+DOMAIN-KEYWORD,yhemby
+DOMAIN-KEYWORD,7777777
+DOMAIN-KEYWORD,581658
+DOMAIN-KEYWORD,sfcj
+DOMAIN-KEYWORD,mooguu
+DOMAIN-KEYWORD,auroramedia
+DOMAIN-KEYWORD,yomo
+DOMAIN-KEYWORD,nanflix
+DOMAIN-KEYWORD,vfing
+DOMAIN-KEYWORD,daigua
