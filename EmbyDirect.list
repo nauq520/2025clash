@@ -63,6 +63,10 @@ DOMAIN-SUFFIX,beebi.org
 # 叔服
 DOMAIN-SUFFIX,mcjoker.xyz
 
+# 叶子
+DOMAIN-SUFFIX,super.yezi.my
+DOMAIN-SUFFIX,yezi.697758.best
+DOMAIN-SUFFIX,yezi.hannn.me
 
 # Emby ip
 IP-CIDR,107.181.238.0/24,no-resolve
