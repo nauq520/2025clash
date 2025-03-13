@@ -9,6 +9,7 @@ DOMAIN-SUFFIX,browserleaks.com
 
 # 其他
 DOMAIN-SUFFIX,glados.network
+DOMAIN-SUFFIX,hjd2048.com
 
 # 域名关键字匹配
 DOMAIN-KEYWORD,ping0
