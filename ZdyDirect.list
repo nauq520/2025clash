@@ -15,9 +15,9 @@ IP-CIDR,63.251.124.0/24,no-resolve
 IP-CIDR,69.46.75.0/24,no-resolve
 
 
-# 自己的域名
-DOMAIN-SUFFIX,wxll.us.kg
+# 自己的github加速域名
+DOMAIN-SUFFIX,wxll.dpdns.org
 
-# 别人的加速站
+# 别人的github加速站
 DOMAIN-SUFFIX,ghfast.yydy.link
 
