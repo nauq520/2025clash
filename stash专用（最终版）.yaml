@@ -1,0 +1,203 @@
+# 机场订阅，名称不能重复
+proxy-providers:
+  Airport_01:
+    type: http
+    interval: 1800
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: 🔵 直连
+    url: "机场订阅"
+  Airport_02:
+    type: http
+    interval: 1800
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: 🔵 直连
+    url: "机场订阅"  
+      
+# 用于下载订阅时指定UA
+global-ua: clash.meta
+    
+# 全局配置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+allow-lan: true
+bind-address: "*"
+ipv6: false
+unified-delay: false
+tcp-concurrent: true
+log-level: warning
+find-process-mode: 'off'
+# interface-name: en0
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 15
+disable-keep-alive: false
+
+# 控制面板
+external-controller: 0.0.0.0:9090
+secret: ""
+external-ui: ui
+external-ui-url: "https://ghfast.yydy.link:2023/https://github.com/MetaCubeX/yacd/archive/gh-pages.zip"
+
+# 策略组选择和fakeip缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+  
+# 流量嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - +.v2ex.com
+  skip-domain:
+    - "rule-set:private_domain,cn_domain"
+    
+# 代理模式（入站）
+tun:
+  enable: true
+  stack: mixed
+  mtu: 9000
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  
+# DNS模块
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  # 模式切换 redir-host / fake-ip
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  # 模式切换 whitelist/blacklist 
+  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "rule-set:private_domain,cn_domain"
+    - "+.services.googleapis.cn"
+    - "+.xn--ngstr-lra8j.com"
+    - "time.*.com"
+    - "+.pool.ntp.org"
+    - "+.ntp.tencent.com"
+    - "+.ntp1.aliyun.com"
+    - "+.ntp.ntsc.ac.cn"
+    - "+.cn.ntp.org.cn"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  # namesever尽量用运营商提供的DNS
+  nameserver:
+    - 221.11.132.2
+    - 221.11.141.9
+ 
+   
+proxies:
+- name: "🔵 直连"
+  type: direct
+  udp: true
+
+# 出站策略 
+# 锚点
+pr: &pr {type: select, proxies: [🚀 节点选择, 🔯 香港故转, 🔯 日本故转, 🇭🇰 香港自动, ♻️ 日本自动, 🇺🇸 美国自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🌐 全部节点, 🔵 直连]}
+# 策略组
+proxy-groups:
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🌐 全部节点, 🔵 直连]}
+  - {name: 🌐 全部节点, type: select, include-all: true, tolerance: 20, interval: 300, exclude-filter: "(?i)(🔵 直连)"}
+  - {name: 📺️ Emby直连, type: select, proxies: [🔵 直连, 🚀 节点选择, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇪🇺 欧洲节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇹🇼 台湾节点, ♻️ HK自动, ♻️ US自动, ♻️ EU自动, ♻️ SG自动, ♻️ JP自动, ♻️ TW自动]}
+  - {name: 🎥 Emby代理, type: select, proxies: [🚀 节点选择, 🔵 直连, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇪🇺 欧洲节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇹🇼 台湾节点, ♻️ HK自动, ♻️ US自动, ♻️ EU自动, ♻️ SG自动, ♻️ JP自动, ♻️ TW自动]} 
+  - {name: 🐟 漏网之鱼, type: select, proxies: [🔵 直连, 🚀 节点选择]}
+  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)(港|🇭🇰|HK|(?i)Hong)" ,exclude-filter: "(?i)(直连|群|邀请|返利|循环|官网|导航|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: 🇺🇸 美国节点, type: select, include-all: true, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|🇺🇲|US|(?i)States|America)" ,exclude-filter: "(?i)(直连|群|邀请|返利|循环|导航|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|russia|austria|plus|traffic|Australia)"}
+  - {name: 🇸🇬 新加坡节点, type: select, include-all: true, filter: "(?i)(新|坡|狮城|🇸🇬|SG|Singapore)" ,exclude-filter: "(?i)(直连|群|邀请|返利|导航|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|JP|Japan)" ,exclude-filter: "(?i)(直连|群|邀请|导航|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: 🇹🇼 台湾节点, type: select, include-all: true, filter: "(?i)(台|🇹🇼|TW|Taiwan)" ,exclude-filter: "(?i)(直连|群|导航|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: 🇪🇺 欧洲节点, type: select, include-all: true, filter: "(?i)(Frankfurt|London|Amsterdam|Paris|法兰克福|伦敦|阿姆斯特丹|巴黎|英国|法国|德国|荷兰|瑞典|波兰|🇦🇱|🇦🇩|🇦🇹|🇧🇾|🇧🇪|🇧🇦|🇧🇬|🇭🇷|🇨🇾|🇨🇿|🇩🇰|🇪🇪|🇫🇮|🇫🇷|🇩🇪|🇬🇷|🇭🇺|🇮🇸|🇮🇪|🇮🇹|🇽🇰|🇱🇻|🇱🇮|🇱🇹|🇱🇺|🇲🇹|🇲🇩|🇲🇨|🇲🇪|🇳🇱|🇲🇰|🇳🇴|🇵🇱|🇵🇹|🇷🇴|🇷🇺|🇸🇲|🇷🇸|🇸🇰|🇸🇮|🇪🇸|🇸🇪|🇨🇭|🇹🇷|🇺🇦|🇬🇧|🇻🇦)" ,exclude-filter: "(?i)(直连|导航|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|austria|traffic)"}
+  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+  - {name: 🎯 全球直连, type: select, proxies: [🔵 直连, 🚀 节点选择]}
+  - {name: ♻️ HK自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(港|🇭🇰|HK|(?i)Hong)" ,exclude-filter: "(?i)(直连|群|邀请|返利|循环|官网|导航|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: ♻️ US自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|🇺🇲|US|(?i)States|America)" ,exclude-filter: "(?i)(直连|群|邀请|返利|循环|导航|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|russia|austria|plus|traffic|Australia)"}
+  - {name: ♻️ SG自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(新|坡|狮城|🇸🇬|SG|Singapore)" ,exclude-filter: "(?i)(直连|群|邀请|返利|导航|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: ♻️ JP自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|JP|Japan)" ,exclude-filter: "(?i)(直连|群|邀请|导航|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: ♻️ TW自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(台|🇹🇼|TW|Taiwan)" ,exclude-filter: "(?i)(直连|群|导航|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|traffic)"}
+  - {name: ♻️ EU自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(Frankfurt|London|Amsterdam|Paris|法兰克福|伦敦|阿姆斯特丹|巴黎|英国|法国|德国|荷兰|瑞典|波兰|🇦🇱|🇦🇩|🇦🇹|🇧🇾|🇧🇪|🇧🇦|🇧🇬|🇭🇷|🇨🇾|🇨🇿|🇩🇰|🇪🇪|🇫🇮|🇫🇷|🇩🇪|🇬🇷|🇭🇺|🇮🇸|🇮🇪|🇮🇹|🇽🇰|🇱🇻|🇱🇮|🇱🇹|🇱🇺|🇲🇹|🇲🇩|🇲🇨|🇲🇪|🇳🇱|🇲🇰|🇳🇴|🇵🇱|🇵🇹|🇷🇴|🇷🇺|🇸🇲|🇷🇸|🇸🇰|🇸🇮|🇪🇸|🇸🇪|🇨🇭|🇹🇷|🇺🇦|🇬🇧|🇻🇦)" ,exclude-filter: "(?i)(直连|导航|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|austria|traffic)"}
+rules:
+  - RULE-SET,ZdyProxy,🚀 节点选择
+  - RULE-SET,ZdyDirect,🔵 直连
+  - RULE-SET,EmbyDirect,📺️ Emby直连
+  - RULE-SET,EmbyProxy,🎥 Emby代理
+  - RULE-SET,private_domain,🔵 直连
+  - RULE-SET,apple_domain,🔵 直连
+  - RULE-SET,proxylite,🚀 节点选择
+  - RULE-SET,ai,🚀 节点选择
+  - RULE-SET,github_domain,🚀 节点选择
+  - RULE-SET,youtube_domain,🚀 节点选择
+  - RULE-SET,google_domain,🚀 节点选择
+  - RULE-SET,onedrive_domain,🎯 全球直连
+  - RULE-SET,microsoft_domain,🎯 全球直连
+  - RULE-SET,tiktok_domain,🚀 节点选择
+  - RULE-SET,speedtest_domain,🚀 节点选择
+  - RULE-SET,telegram_domain,🚀 节点选择
+  - RULE-SET,netflix_domain,🚀 节点选择
+  - RULE-SET,paypal_domain,🚀 节点选择
+  - RULE-SET,geolocation-!cn,🚀 节点选择
+  - RULE-SET,cn_domain,🎯 全球直连
+  - RULE-SET,google_ip,🚀 节点选择,no-resolve
+  - RULE-SET,netflix_ip,🚀 节点选择,no-resolve
+  - RULE-SET,telegram_ip,🚀 节点选择,no-resolve
+  - RULE-SET,cn_ip,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  qcy: &qcy {type: http, interval: 86400, behavior: domain, format: text}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+rule-providers: 
+  ZdyProxy: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/nauq520/2025clash/refs/heads/main/ZdyProxy.list"}
+  ZdyDirect: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/nauq520/2025clash/refs/heads/main/ZdyDirect.list"}
+  EmbyDirect: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/nauq520/2025clash/refs/heads/main/EmbyDirect.list"}
+  EmbyProxy: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/nauq520/2025clash/refs/heads/main/EmbyProxy.list"}
+  private_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.yaml"}
+  proxylite: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/ProxyLite.list"}
+  ai: { <<: *domain, url: "https://ghfast.yydy.link:2023/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ai-!cn.yaml"}
+  youtube_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.yaml"}
+  google_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.yaml"}
+  github_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.yaml"}
+  telegram_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.yaml"}
+  netflix_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.yaml"}
+  paypal_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.yaml"}
+  onedrive_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.yaml"}
+  microsoft_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.yaml"}
+  apple_domain: {!!merge <<: *class, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list"}
+  speedtest_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.yaml"}
+  tiktok_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.yaml"}
+  gfw_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.yaml"}
+  geolocation-!cn: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.yaml"}
+  cn_domain: {!!merge <<: *domain, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml"}
+  
+  cn_ip: {!!merge <<: *ip, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.yaml"}
+  google_ip: {!!merge <<: *ip, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.yaml"}
+  telegram_ip: {!!merge <<: *ip, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.yaml"}
+  netflix_ip: {!!merge <<: *ip, url: "https://ghfast.yydy.link:2023/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.yaml"}
