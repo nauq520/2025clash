@@ -68,6 +68,9 @@ DOMAIN-SUFFIX,super.yezi.my
 DOMAIN-SUFFIX,yezi.697758.best
 DOMAIN-SUFFIX,yezi.hannn.me
 
+# 桃子
+DOMAIN-KEYWORD,embymv
+
 # Emby ip
 IP-CIDR,107.181.238.0/24,no-resolve
 IP-CIDR,31.25.88.0/24,no-resolve
